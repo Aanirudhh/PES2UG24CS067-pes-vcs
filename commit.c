@@ -227,4 +227,8 @@ if (object_write(OBJ_COMMIT, data, len, commit_id_out) != 0) {
 }
 
 free(data);
+
+if (head_update(commit_id_out) != 0) return -1;
+
+return 0;
 }
