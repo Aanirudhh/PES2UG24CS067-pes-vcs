@@ -204,4 +204,12 @@ if (strncmp((char*)full_data, "blob", 4) == 0) *type_out = OBJ_BLOB;
 else if (strncmp((char*)full_data, "tree", 4) == 0) *type_out = OBJ_TREE;
 else if (strncmp((char*)full_data, "commit", 6) == 0) *type_out = OBJ_COMMIT;
 else { free(full_data); return -1; }
+
+    size_t header_len = (null_byte - full_data) + 1;
+*len_out = file_size - header_len;
+
+*data_out = malloc(*len_out);
+if (!*data_out) { free(full_data); return -1; }
+
+memcpy(*data_out, full_data + header_len, *len_out);
 }
