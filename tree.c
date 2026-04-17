@@ -149,4 +149,5 @@ if (load_index_snapshot(index) != 0) {
     return -1;
 }
     rc = write_tree_level(index, "", id_out);
+    free(index);
 }
