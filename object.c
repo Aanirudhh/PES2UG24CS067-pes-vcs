@@ -212,4 +212,7 @@ else { free(full_data); return -1; }
 if (!*data_out) { free(full_data); return -1; }
 
 memcpy(*data_out, full_data + header_len, *len_out);
+
+    free(full_data);
+return 0;
 }
