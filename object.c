@@ -112,6 +112,18 @@ memcpy(full_data, header, header_len);
 memcpy(full_data + header_len, data, len);
 
 compute_hash(full_data, full_len, id_out);
+
+    if (object_exists(id_out)) {
+    free(full_data);
+    return 0;
+}
+
+char hex[HASH_HEX_SIZE + 1];
+hash_to_hex(id_out, hex);
+
+char dir_path[512];
+snprintf(dir_path, sizeof(dir_path), "%s/%.2s", OBJECTS_DIR, hex);
+mkdir(dir_path, 0755);
 }
 
 // Read an object from the store.
