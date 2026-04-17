@@ -144,4 +144,8 @@ if (load_index_snapshot(index) != 0) {
     free(index);
     return -1;
 }
+    if (index->count == 0) {
+    free(index);
+    return -1;
+}
 }
