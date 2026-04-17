@@ -103,6 +103,15 @@ else return -1;
 
 char header[64];
 int header_len = snprintf(header, sizeof(header), "%s %zu", type_str, len) + 1;
+
+    size_t full_len = header_len + len;
+uint8_t *full_data = malloc(full_len);
+if (!full_data) return -1;
+
+memcpy(full_data, header, header_len);
+memcpy(full_data + header_len, data, len);
+
+compute_hash(full_data, full_len, id_out);
 }
 
 // Read an object from the store.
