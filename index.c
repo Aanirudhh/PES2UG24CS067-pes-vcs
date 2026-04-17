@@ -159,6 +159,19 @@ if (!f) return 0;
         fclose(f);
         return -1;
     }
+
+            if (hex_to_hash(hex, &entry->hash) != 0) {
+        fclose(f);
+        return -1;
+    }
+
+    entry->mtime_sec = (uint64_t)mtime;
+    entry->size = size;
+    index->count++;
+}
+
+fclose(f);
+return 0;
 }
 
 // Save the index to .pes/index atomically.
