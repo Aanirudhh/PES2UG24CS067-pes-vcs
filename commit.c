@@ -210,4 +210,9 @@ if (head_read(&parent) == 0) {
 } else {
     commit.has_parent = 0;
 }
+
+    snprintf(commit.author, sizeof(commit.author), "%s", pes_author());
+commit.timestamp = (uint64_t)time(NULL);
+
+snprintf(commit.message, sizeof(commit.message), "%s", message);
 }
