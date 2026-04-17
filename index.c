@@ -223,6 +223,39 @@ return 0;
 int index_add(Index *index, const char *path) {
     // TODO: Implement file staging
     // (See Lab Appendix for logical steps)
-    (void)index; (void)path;
+    FILE *f;
+struct stat st;
+void *data;
+ObjectID blob_id;
+IndexEntry *entry;
+
+if (!index || !path) return -1;
+
+if (stat(path, &st) != 0 || !S_ISREG(st.st_mode)) return -1;
+
+f = fopen(path, "rb");
+if (!f) return -1;
+
+data = malloc(st.st_size ? st.st_size : 1);
+fread(data, 1, st.st_size, f);
+fclose(f);
+
+if (object_write(OBJ_BLOB, data, st.st_size, &blob_id) != 0) {
+    free(data);
     return -1;
+}
+free(data);
+
+entry = index_find(index, path);
+if (!entry) {
+    entry = &index->entries[index->count++];
+}
+
+entry->mode = (st.st_mode & S_IXUSR) ? 0100755 : 0100644;
+entry->hash = blob_id;
+entry->mtime_sec = st.st_mtime;
+entry->size = st.st_size;
+strcpy(entry->path, path);
+
+return index_save(index);
 }
