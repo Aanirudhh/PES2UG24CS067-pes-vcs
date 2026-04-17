@@ -188,4 +188,12 @@ if (fread(full_data, 1, file_size, f) != (size_t)file_size) {
     free(full_data); fclose(f); return -1;
 }
 fclose(f);
+
+    ObjectID computed_id;
+compute_hash(full_data, file_size, &computed_id);
+
+if (memcmp(id->hash, computed_id.hash, HASH_SIZE) != 0) {
+    free(full_data);
+    return -1;
+}
 }
