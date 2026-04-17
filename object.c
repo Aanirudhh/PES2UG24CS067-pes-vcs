@@ -141,6 +141,10 @@ if (write(fd, full_data, full_len) != (ssize_t)full_len) {
 fsync(fd);
 close(fd);
 free(full_data);
+
+    if (rename(temp_path, file_path) != 0) return -1;
+
+return 0;
 }
 
 // Read an object from the store.
