@@ -145,6 +145,20 @@ index->count = 0;
 
 f = fopen(INDEX_FILE, "r");
 if (!f) return 0;
+
+    while (fgets(line, sizeof(line), f)) {
+    IndexEntry *entry;
+    char hex[HASH_HEX_SIZE + 1];
+    unsigned long long mtime;
+    unsigned int size;
+
+    entry = &index->entries[index->count];
+
+    if (sscanf(line, "%o %64s %llu %u %511[^\n]",
+               &entry->mode, hex, &mtime, &size, entry->path) != 5) {
+        fclose(f);
+        return -1;
+    }
 }
 
 // Save the index to .pes/index atomically.
